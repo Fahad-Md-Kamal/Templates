@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+      <button mat-icon-button (click)="toggeleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+<div fxFlex fxLayout="row" fxLayoutAlign="end">
+      
+
+      <div fxFlex fxLayout="row" fxLayoutAlign="end">
+        <ul fxLayout="row" fxLayoutGap="20px">
+          <li>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>person_outline</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="Authenticate()" >
+                <mat-icon class="btn-signin">power_settings_new</mat-icon>
+                Sign In
+              </button>
+              <button mat-menu-item (click)="userLogout()">
+                <mat-icon class="btn-signout">power_settings_new</mat-icon>
+                Sign Out
+              </button>
+            </mat-menu>
+          </li>
+          <li>
+            <button mat-icon-button>
+              <mat-icon>settings</mat-icon>
+            </button>
+          </li>
+          <li>
+            <button mat-icon-button>
+              <mat-icon>help_outline</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    </mat-toolbar-row>
+  </mat-toolbar>

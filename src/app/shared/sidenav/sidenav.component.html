@@ -1,0 +1,60 @@
+<mat-nav-list>
+    <div *ngIf="isAuthenticated" class="profile-card">
+        <div class="header">
+            <h2>Dogs Profile</h2>
+            <h4>dog@gmail.com</h4>
+        </div>
+        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Dogs Profile">
+    </div>
+  <mat-divider></mat-divider>
+  <h2 matSubheader >Pages</h2>
+  
+  
+  
+  <mat-accordion>
+    <a mat-list-item routerLink="/" routerLinkActive="list-item-active" >
+      <mat-icon>home</mat-icon>
+       home
+      </a>
+  
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+        <mat-icon>people</mat-icon>
+         Users
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+        <mat-divider> </mat-divider>
+        <a mat-list-item routerLink="/users" routerLinkActive="list-item-active" >All Users</a>
+    </mat-expansion-panel>
+  
+  
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>library_books</mat-icon>
+         Posts
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+        <mat-divider> </mat-divider>
+    <a mat-list-item routerLink="/articles" routerLinkActive="list-item-active" >Posts</a>
+    </mat-expansion-panel>
+  </mat-accordion>
+  
+  
+  
+  
+  
+  <mat-divider></mat-divider>
+  
+  <h2 matSubheader>Tools</h2>
+  <a mat-list-item routerLink="/" routerLinkActive="list-item-active" >
+    <mat-icon>import_contacts</mat-icon>
+    Contacts
+  </a>
+  <a mat-list-item routerLink="/" routerLinkActive="list-item-active" >
+    <mat-icon>contact_phone</mat-icon>
+    Leads
+  </a>
+  
+  </mat-nav-list>

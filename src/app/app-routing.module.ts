@@ -1,8 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DefaultComponent } from './layout/default/default.component';
+import { HomeComponent } from './modules/home/home.component';
+import { FullwidthComponent } from './layout/fullwidth/fullwidth.component';
+import { AuthComponent } from './modules/auth/auth.component';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '', component: DefaultComponent, children:[
+   {path: '', component: HomeComponent} 
+  ]},
+
+  {path: '', component: FullwidthComponent, children:[
+   {path: 'auth', component: AuthComponent} 
+  ]},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
