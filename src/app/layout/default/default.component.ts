@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class DefaultComponent implements OnInit {
 
   isOpenedSideBar = true;
-  isAuthenticated = true;
+  public isAuthenticated = true;
 
   constructor() { }
 
