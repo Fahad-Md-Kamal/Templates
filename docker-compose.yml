@@ -1,0 +1,31 @@
+version: '3'
+# volumes: 
+#     pgdata:
+
+services: 
+    python:
+        # image: python:3.8
+        build: 
+            context: .
+            dockerfile: docker/python/Dockerfile
+        volumes: 
+            - ./app:/app
+        ports: 
+            - 8000:8000
+        command: python manage.py runserver 0.0.0.0:8000
+    postgres:
+        image: postgres
+        restart: always
+        environment: 
+            POSTGRES_USER: tickets
+            POSTGRES_DB: tickets
+            POSTGRES_PASSOWRD: tickets
+            POSTGRES_HOST_AUTH_METHOD: trust
+        ports: 
+            - 5432:5432
+
+# volumes: 
+#     - pgdata:/var/lib/postgresql/data
+
+# POSTGRES_USER: tickets
+# POSTGRES_DB: tickets
