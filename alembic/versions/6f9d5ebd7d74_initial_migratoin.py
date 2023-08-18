@@ -1,4 +1,4 @@
-"""Fahad Md KamalInitial migratoin
+"""Fahad Md Kamal Initial migratoin
 
 Revision ID: 6f9d5ebd7d74
 Revises: 

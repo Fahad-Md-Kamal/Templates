@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  web:
+    container_name: web
+    build: 
+      context: .
+    command: bash -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+
+  db:
+    container_name: database
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fastapi_db
+
+
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #   ports:
+  #     - "5050:80"
+  #   depends_on:
+  #     - postgres
