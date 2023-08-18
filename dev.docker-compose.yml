@@ -1,0 +1,74 @@
+version: "3.7"
+
+services:
+  web:
+    container_name: web
+    build: 
+      context: .
+    command: bash -c "poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./:/app
+      - ./dock_env/:/root
+    env_file:
+      - .env
+    networks:
+      - bridge
+
+  db:
+    container_name: db
+    image: postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - fastapi_db:/var/lib
+    env_file:
+      - .env
+    networks:
+      - bridge
+
+  adminer:
+    image: adminer
+    container_name: database_viewer
+    restart: always
+    ports:
+      - 4001:8080
+    networks:
+      - bridge
+  
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #   ports:
+  #     - "5050:80"
+  #   depends_on:
+  #     - database
+  #   volumes:
+  #     - ./vdata:/var/lib
+
+  redis:
+    image: redis:7.2.0-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - fastapi_cache:/data
+    networks:
+      - bridge
+
+volumes:
+  fastapi_db:
+    driver: local
+  fastapi_cache:
+    driver: local
+
+networks:
+  bridge:

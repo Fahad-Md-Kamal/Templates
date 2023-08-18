@@ -1,0 +1,17 @@
+# Alembic Commands
+
+### Generating auto migration for a table change
+
+```bash
+docker-compose run web alembic revision --autogenerate -m "initial migration"
+```
+
+### Applying migration to the database
+```bash
+docker-compose run web alembic upgrade head
+```
+
+### Downgrade migration to -1 or more (e.g -2)
+```base
+docker-compose run web alembic downgrade -1
+```

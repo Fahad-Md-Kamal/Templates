@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  web:
+    container_name: web
+    build: 
+      context: .
+    command: bash -c "poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+
+  database:
+    container_name: database
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./vdata:/var/lib
+    env_file:
+      - .env
