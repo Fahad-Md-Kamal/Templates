@@ -16,6 +16,7 @@ class PostCreate(PostBase):
 class Post(PostBase):
     id: int
     created_at: datetime
+
     class Config:
         from_attributes = True
 
@@ -23,5 +24,6 @@ class Post(PostBase):
 class PostOut(BaseModel):
     Post: Post
     votes: int
+
     class Config:
         from_attributes = True
