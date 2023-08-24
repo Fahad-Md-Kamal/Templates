@@ -13,8 +13,8 @@ router = APIRouter(prefix="/posts", tags=["POSTS"])
 @router.post("/", response_model=schemas.Post)
 async def create_post(post: schemas.PostCreate, 
     db: Session = Depends(get_db), 
-    user_id: int = Depends(get_current_user)
-    ):
+    current_user = Depends(get_current_user)
+):
     new_post = Posts(**post.model_dump())
     db.add(new_post)
     db.commit()
@@ -31,7 +31,8 @@ async def get_all_posts(
     posts = db.query(Posts).offset(skip).limit(limit).all()
     if len(posts) <= 0:
         raise HTTPException(
-            detail="No Post Exists", status_code=status.HTTP_404_NOT_FOUND
+            detail="No Post Exists", 
+            status_code=status.HTTP_404_NOT_FOUND
         )
     return posts
 
@@ -40,11 +41,13 @@ async def get_all_posts(
 async def get_post_detail(
     post_id: int, 
     db: Session = Depends(get_db)
-    ):
-    post = db.query(Posts).filter(Posts.id == post_id).first()
-    if not post:
-        raise HTTPException(detail="Not-Found", status_code=status.HTTP_404_NOT_FOUND)
-    return post
+):
+    if post := db.query(Posts).filter(Posts.id == post_id).first():
+        return post
+    raise HTTPException(
+        detail="Not-Found", 
+        status_code=status.HTTP_404_NOT_FOUND
+    )
 
 
 @router.patch("/{post_id}", response_model=schemas.Post)
@@ -52,11 +55,14 @@ async def update_post(
     post_id: int, 
     post: schemas.PostCreate, 
     db: Session = Depends(get_db), 
-    user_id: int = Depends(get_current_user)
+    current_user = Depends(get_current_user)
 ):
     post_query = db.query(Posts).filter(Posts.id == post_id)
-    if post_query.first() == None:
-        raise HTTPException(detail="Not-Found", status_code=status.HTTP_404_NOT_FOUND)
+    if not post_query.first():
+        raise HTTPException(
+            detail="Not-Found", 
+            status_code=status.HTTP_404_NOT_FOUND
+        )
     post_query.update(post.model_dump(), synchronize_session=False)
     db.commit()
     return post_query.first()
@@ -66,8 +72,8 @@ async def update_post(
 async def delete_post(
     post_id: int, 
     db: Session = Depends(get_db), 
-    user_id: int = Depends(get_current_user)
-    ):
+    current_user = Depends(get_current_user)
+):
     post = db.query(Posts).filter(Posts.id == post_id)
     if post.first() is None:
         raise HTTPException(detail="Not-Found", status_code=status.HTTP_404_NOT_FOUND)

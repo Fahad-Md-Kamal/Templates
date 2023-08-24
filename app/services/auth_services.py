@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
-from app import schemas
+from app import schemas, database, models
 from fastapi.security import OAuth2PasswordBearer
-
+from sqlalchemy.orm import Session
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY="SUPER-SECRET"
@@ -39,11 +39,11 @@ def verify_access_token(token: str, credentials_exception):
     except JWTError as e:
         raise credentials_exception from e
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(database.get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, 
         detail="Coul not validate credentials", 
         headers={"WWW-Authenticate": "Bearer"}
     )
-    
-    return verify_access_token(token, credentials_exception)
+    token = verify_access_token(token, credentials_exception)
+    return db.query(models.Users).filter(models.Users.id == token.id).first()
