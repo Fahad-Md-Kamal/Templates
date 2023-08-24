@@ -6,11 +6,12 @@ from app.database import get_db
 from app.services.auth_services import create_password_hash
 from app.utils.pagination import pagination
 
-
 router = APIRouter(prefix="/users", tags=["USERS"])
 
-@router.post("/", status_code=status.HTTP_201_CREATED, 
-    response_model=schemas.UserResponse)
+
+@router.post(
+    "/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse
+)
 async def register_user(user: schemas.UserBase, db: Session = Depends(get_db)):
     user.password = create_password_hash(user.password)
     new_user = models.Users(**user.model_dump())
@@ -22,8 +23,8 @@ async def register_user(user: schemas.UserBase, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=list[schemas.UserResponse])
 async def get_all_users(
-    pagination: tuple[int, int] = Depends(pagination), 
-    db: Session = Depends(get_db)):
+    pagination: tuple[int, int] = Depends(pagination), db: Session = Depends(get_db)
+):
     skip, limit = pagination
     users = db.query(models.Users).offset(skip).limit(limit).all()
     if len(users) <= 0:

@@ -163,3 +163,5 @@ cython_debug/
 # 00*
 static/
 email_body/*.html
+vdata/
+data/
